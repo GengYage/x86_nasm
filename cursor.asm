@@ -1,9 +1,13 @@
 [org 0x7c00]
 
+; 光标地址端口
 CRT_ADDR_REG equ 0x3D4
+; 光标数据端口
 CRT_DATE_REG equ 0x3D5
 
+; 光标位置高八位
 CRT_CURSOR_HIGH equ 0x0E
+; 光标位置低八位
 CRT_CURSOR_LOW equ 0x0F
 
 mov ax, 3
@@ -12,15 +16,40 @@ int 0x10
 ; bochs 断点
 xchg bx, bx
 
-mov ax, 15 * 80
+mov ax, 0xb800
+mov es, ax
 
-call set_cursor
+mov si, message
 
-; 清空ax
-mov ax, 0x0000
+print:
+    call get_cursor
+    
+    mov di, ax
+    ; di x 2
+    shl di, 1
 
-;验证ax是否位0x04b0
-call get_cursor
+    mov bl, [si] ; 将源操作数移动到bl    
+    cmp bl, 0; 遇到0跳出打印
+    jz print_end
+
+    mov [es:di], bl ; 将bl移动到段寄存器
+    
+    inc si
+    inc ax; 移动光标
+    call set_cursor
+    jmp print
+
+print_end:
+
+; mov ax, 15 * 80
+
+; call set_cursor
+
+; ; 清空ax
+; mov ax, 0x0000
+
+; ;验证ax是否位0x04b0
+; call get_cursor
 
 jmp $
 
@@ -74,7 +103,7 @@ get_cursor:
     mov dx, CRT_DATE_REG
     mov al, bl
     in al, dx
-    
+
     pop dx
     ret
 
