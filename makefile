@@ -1,7 +1,7 @@
-%.bin: %.asm
+build/%.bin: src/%.asm
 	nasm -f bin $< -o $@
 
-%.img: %.bin
+%.img: build/%.bin
 ifeq ("$(wildcard master.img)", "")
 	bximage -q -hd=16 -func=create -sectsize=512 -imgmode=flat master.img
 endif
@@ -14,5 +14,5 @@ endif
 
 .PHONY:clean
 clean:
-	rm -rf *.bin
+	rm -rf ./build/*.bin
 	rm -rf master.img
