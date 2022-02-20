@@ -14,5 +14,5 @@ endif
 
 .PHONY:clean
 clean:
-	rm -rf ./build/*.bin
+	rm -rf build/*.bin
 	rm -rf master.img
