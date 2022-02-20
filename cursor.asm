@@ -33,6 +33,7 @@ print:
     jz print_end
 
     mov [es:di], bl ; 将bl移动到段寄存器
+    mov byte [es:di + 1], 0b0000_1100
     
     inc si
     inc ax; 移动光标
