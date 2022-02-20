@@ -9,7 +9,7 @@ mov cx, 100
 ; start:
 ;     add ax, cx
 ;     sub cx, 1
-;     ; 判断 cx是否为0,为0跳转到end
+;     ; 判断 ZF是否为0（也就是cx是否为0）,为0跳转到end
 ;     jz end
 ;     jmp start
 
